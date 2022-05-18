@@ -8,6 +8,6 @@
 
         <x-homepage.week_models />
 
-        <x-homepage.news />
+        <x-homepage.news :news="$news" />
     </main>
 @endsection
