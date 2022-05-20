@@ -11,4 +11,8 @@
     <x-input.textarea id="body_field" name="body" value="{{ old('body', $news->body) }}" :error="$errors->first('body')"/>
 </x-input.group>
 
+<x-input.group for="tags_field" label="Теги" :error="$errors->first('tags')">
+    <x-input.text id="tags_field" name="tags" value="{{ old('tags', $news->tags->pluck('name')->implode(',')) }}" :error="$errors->first('tags')"/>
+</x-input.group>
+
 <x-input.checkbox name="published" label="Опубликовать" checked="{{ old('published', $news->published_at) ? 'checked' : '' }}"/>

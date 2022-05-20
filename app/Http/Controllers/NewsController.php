@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsRequest;
+use App\Http\Requests\TagRequest;
 use App\Models\News;
+use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -34,11 +36,17 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  NewsRequest  $newsRequest
+     * @param  TagRequest $tagRequest
+     * @param  TagsSynchronizer $tagsSynchronizer
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsRequest $newsRequest)
+    public function store(NewsRequest $newsRequest, TagRequest $tagRequest, TagsSynchronizer $tagsSynchronizer)
     {
-        News::create($newsRequest->validated());
+        $news = News::create($newsRequest->validated());
+
+        $tags = $tagRequest->validated()['tags'];
+
+        $tagsSynchronizer->sync($tags, $news);
 
         session()->flash('success_message', 'Новость успешно создана');
 
@@ -71,12 +79,18 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  NewsRequest  $newsRequest
+     * @param  TagRequest  $tagRequest
+     * @param  TagsSynchronizer  $tagsSynchronizer
      * @param  News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(NewsRequest $newsRequest, News $news)
+    public function update(NewsRequest $newsRequest, TagRequest $tagRequest, TagsSynchronizer $tagsSynchronizer, News $news)
     {
         $news->update($newsRequest->validated());
+
+        $tags = $tagRequest->validated()['tags'];
+
+        $tagsSynchronizer->sync($tags, $news);
 
         session()->flash('success_message', 'Новость успешно отредактирована');
 

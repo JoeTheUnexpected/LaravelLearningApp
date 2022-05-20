@@ -10,10 +10,7 @@
 
         <img src="/images/no_image.png" alt="" title="">
 
-        <div>
-            <span class="text-sm text-white italic rounded bg-blue-800 px-2">Это</span>
-            <span class="text-sm text-white italic rounded bg-blue-800 px-2">Теги</span>
-        </div>
+        <x-tags.list :tags="$news->tags" />
 
         <p>{!! $news->body !!}</p>
     </div>

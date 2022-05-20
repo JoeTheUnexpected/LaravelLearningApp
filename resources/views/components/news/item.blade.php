@@ -13,10 +13,9 @@
             <p class="text-gray-600 text-base">
                 <a class="hover:text-blue-800" href="{{ route('news.show', $item) }}">{{ $item->description }}</a>
             </p>
-            <div>
-                <span class="text-sm text-white italic rounded bg-blue-800 px-2">Это</span>
-                <span class="text-sm text-white italic rounded bg-blue-800 px-2">Теги</span>
-            </div>
+
+            <x-tags.list :tags="$item->tags" />
+
             <div class="flex items-center">
                 <p class="text-sm text-gray-600 italic">{{ \Illuminate\Support\Carbon::parse($item->published_at)->format('d M Y') }}</p>
             </div>
