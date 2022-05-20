@@ -17,7 +17,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::whereNotNull('published_at')->latest('published_at')->get();
+        $news = News::whereNotNull('published_at')->latest('published_at')->paginate(5);
 
         return view('pages.news.index', compact('news'));
     }

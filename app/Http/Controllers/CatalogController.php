@@ -8,7 +8,7 @@ class CatalogController extends Controller
 {
     public function index()
     {
-        $cars = Car::get();
+        $cars = Car::paginate(16);
 
         return view('pages.catalog.index', compact('cars'));
     }
