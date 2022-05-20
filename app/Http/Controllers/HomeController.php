@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use App\Models\News;
 
 class HomeController extends Controller
@@ -10,6 +11,8 @@ class HomeController extends Controller
     {
         $news = News::whereNotNull('published_at')->latest('published_at')->limit(3)->get();
 
-        return view('pages.home.index', compact('news'));
+        $cars = Car::where('is_new', true)->limit(4)->get();
+
+        return view('pages.home.index', compact('news', 'cars'));
     }
 }

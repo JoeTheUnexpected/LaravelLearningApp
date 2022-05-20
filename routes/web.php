@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InnerPagesController;
 use App\Http\Controllers\NewsController;
@@ -25,3 +26,6 @@ Route::get('/financial', [InnerPagesController::class, 'financial'])->name('fina
 Route::get('/clients', [InnerPagesController::class, 'clients'])->name('clients');
 
 Route::resource('/news', NewsController::class);
+
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/products/{car}', [CatalogController::class, 'show'])->name('catalog.show');
