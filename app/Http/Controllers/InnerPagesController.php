@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+
 class InnerPagesController extends Controller
 {
     public function about()
@@ -26,6 +28,8 @@ class InnerPagesController extends Controller
 
     public function clients()
     {
-        return view('pages.inner.clients');
+        $cars = Car::with('carBody', 'carClass', 'carEngine')->get();
+
+        return view('pages.inner.clients', compact('cars'));
     }
 }
