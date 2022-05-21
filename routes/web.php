@@ -29,3 +29,4 @@ Route::resource('/news', NewsController::class);
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/products/{car}', [CatalogController::class, 'show'])->name('catalog.show');
+Route::get('/catalog/{category}', [CatalogController::class, 'category'])->name('catalog.category');

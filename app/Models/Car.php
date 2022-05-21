@@ -23,4 +23,9 @@ class Car extends Model
     {
         return $this->belongsTo(CarEngine::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

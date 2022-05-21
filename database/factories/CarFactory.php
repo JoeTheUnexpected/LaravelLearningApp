@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\CarBody;
 use App\Models\CarClass;
 use App\Models\CarEngine;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -32,6 +33,7 @@ class CarFactory extends Factory
             'car_body_id' => CarBody::factory(),
             'car_class_id' => CarClass::factory(),
             'car_engine_id' => CarEngine::factory(),
+            'category_id' => Category::factory(),
         ];
     }
 }

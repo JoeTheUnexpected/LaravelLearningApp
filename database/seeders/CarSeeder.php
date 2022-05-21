@@ -6,6 +6,7 @@ use App\Models\Car;
 use App\Models\CarBody;
 use App\Models\CarClass;
 use App\Models\CarEngine;
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,12 +23,16 @@ class CarSeeder extends Seeder
         $carClasses = CarClass::factory()->count(4)->create();
         $carEngines = CarEngine::factory()->count(4)->create();
 
+        $this->call(CategorySeeder::class);
+        $categories = Category::get();
+
         Car::factory()
             ->count(20)
             ->sequence(fn ($sequence) => [
                 'car_body_id' => mt_rand(1, 100) <= 50 ? null : $carBodies->random(),
                 'car_class_id' => $carClasses->random(),
                 'car_engine_id' => $carEngines->random(),
+                'category_id' => $categories->random(),
                 ])
             ->create();
     }
