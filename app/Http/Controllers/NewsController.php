@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NewsRequest;
-use App\Http\Requests\TagRequest;
 use App\Models\News;
-use App\Services\TagsSynchronizer;
-use Illuminate\Http\Request;
+use App\Services\CreateNewsService;
+use App\Services\UpdateNewsService;
 
 class NewsController extends Controller
 {
@@ -35,20 +33,12 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  NewsRequest  $newsRequest
-     * @param  TagRequest $tagRequest
-     * @param  TagsSynchronizer $tagsSynchronizer
+     * @param  CreateNewsService  $createNewsService
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsRequest $newsRequest, TagRequest $tagRequest, TagsSynchronizer $tagsSynchronizer)
+    public function store(CreateNewsService $createNewsService)
     {
-        $news = News::create($newsRequest->validated());
-
-        $tags = $tagRequest->validated()['tags'];
-
-        $tagsSynchronizer->sync($tags, $news);
-
-        session()->flash('success_message', 'Новость успешно создана');
+        $createNewsService->create();
 
         return back();
     }
@@ -78,21 +68,13 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  NewsRequest  $newsRequest
-     * @param  TagRequest  $tagRequest
-     * @param  TagsSynchronizer  $tagsSynchronizer
+     * @param  UpdateNewsService  $updateNewsService
      * @param  News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(NewsRequest $newsRequest, TagRequest $tagRequest, TagsSynchronizer $tagsSynchronizer, News $news)
+    public function update(UpdateNewsService $updateNewsService, News $news)
     {
-        $news->update($newsRequest->validated());
-
-        $tags = $tagRequest->validated()['tags'];
-
-        $tagsSynchronizer->sync($tags, $news);
-
-        session()->flash('success_message', 'Новость успешно отредактирована');
+        $updateNewsService->update($news);
 
         return redirect()->route('news.edit', $news);
     }
