@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use App\Models\Category;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
 
 class Categories extends Component
@@ -17,7 +18,9 @@ class Categories extends Component
      */
     public function __construct()
     {
-        $this->categories = Category::whereIsRoot()->with('children')->orderBy('sort')->get();
+        $this->categories = Cache::tags(['categories'])->remember('root_categories', now()->addHour(), function () {
+            return Category::whereIsRoot()->with('children')->orderBy('sort')->get();
+        });
     }
 
     /**

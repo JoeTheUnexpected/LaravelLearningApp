@@ -28,6 +28,8 @@ class InnerPagesController extends Controller
 
     public function clients()
     {
+        \Debugbar::disable();
+
         $cars = Car::with('carBody', 'carClass', 'carEngine')->get();
 
         return view('pages.inner.clients', compact('cars'));

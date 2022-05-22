@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Services\CreateNewsService;
 use App\Services\UpdateNewsService;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
@@ -15,7 +16,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::whereNotNull('published_at')->latest('published_at')->paginate(5);
+        $news = Cache::tags(['news', 'tags'])->remember('news|page=' . request()->get('page', 1), now()->addHour(), function () {
+            return News::with('tags')->whereNotNull('published_at')->latest('published_at')->paginate(5);
+        });
 
         return view('pages.news.index', compact('news'));
     }
@@ -46,11 +49,15 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  News  $news
+     * @param  string|int  $routeKey
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(string|int $routeKey)
     {
+        $news = Cache::tags(['news', 'tags'])->remember("news|key=$routeKey", now()->addHour(), function () use ($routeKey) {
+            return News::where(News::make()->getRouteKeyName(), $routeKey)->with('tags')->firstOrFail();
+        });
+
         return view('pages.news.show', compact('news'));
     }
 
