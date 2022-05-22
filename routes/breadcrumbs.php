@@ -36,6 +36,11 @@ Breadcrumbs::for('clients', function (BreadcrumbTrail $trail) {
     $trail->push('Для клиентов', route('clients'));
 });
 
+Breadcrumbs::for('account', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Личный кабинет', route('account'));
+});
+
 Breadcrumbs::for('news.index', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Все новости', route('news.index'));
@@ -86,4 +91,14 @@ Breadcrumbs::for('catalog.show', function (BreadcrumbTrail $trail, $carKey) {
 
     $trail->parent('catalog.category', $car->category->getRouteKey());
     $trail->push($car->name, route('catalog.show', $carKey));
+});
+
+Breadcrumbs::for('login', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Авторизация', route('login'));
+});
+
+Breadcrumbs::for('register', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Регистрация', route('register'));
 });

@@ -34,4 +34,9 @@ class InnerPagesController extends Controller
 
         return view('pages.inner.clients', compact('cars'));
     }
+
+    public function account()
+    {
+        return view('pages.inner.account');
+    }
 }
