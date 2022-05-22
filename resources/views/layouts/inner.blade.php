@@ -3,7 +3,7 @@
 @section('header')
     @parent
 
-    <x-panels.breadcrumbs/>
+    {{ \Diglactic\Breadcrumbs\Breadcrumbs::render() }}
 @endsection
 
 @section('content')
