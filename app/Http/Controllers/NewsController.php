@@ -16,8 +16,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = Cache::tags(['news', 'tags'])->remember('news|page=' . request()->get('page', 1), now()->addHour(), function () {
-            return News::with('tags')->whereNotNull('published_at')->latest('published_at')->paginate(5);
+        $news = Cache::tags(['news', 'tags'])->remember('news|page=' . request()->get('page', 1) . ((auth()->check() && auth()->user()->isAdmin()) ? '|admin' : ''), now()->addHour(), function () {
+            return News::when(!(auth()->check() && auth()->user()->isAdmin()), function ($query) {
+                    $query->whereNotNull('published_at');
+                })->with('tags')->latest('published_at')->paginate(5);
         });
 
         return view('pages.news.index', compact('news'));
@@ -30,6 +32,8 @@ class NewsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', News::class);
+
         return view('pages.news.create');
     }
 
@@ -41,6 +45,8 @@ class NewsController extends Controller
      */
     public function store(CreateNewsService $createNewsService)
     {
+        $this->authorize('create', News::class);
+
         $createNewsService->create();
 
         return back();
@@ -55,7 +61,9 @@ class NewsController extends Controller
     public function show(string|int $routeKey)
     {
         $news = Cache::tags(['news', 'tags'])->remember("news|key=$routeKey", now()->addHour(), function () use ($routeKey) {
-            return News::where(News::make()->getRouteKeyName(), $routeKey)->with('tags')->firstOrFail();
+            return News::when(!(auth()->check() && auth()->user()->isAdmin()), function ($query) {
+                    $query->whereNotNull('published_at');
+                })->where(News::make()->getRouteKeyName(), $routeKey)->with('tags')->firstOrFail();
         });
 
         return view('pages.news.show', compact('news'));
@@ -64,11 +72,19 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  News  $news
+     * @param  string|int  $routeKey
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(string|int $routeKey)
     {
+        $news = Cache::tags(['news', 'tags'])->remember("news|key=$routeKey", now()->addHour(), function () use ($routeKey) {
+            return News::when(!(auth()->check() && auth()->user()->isAdmin()), function ($query) {
+                    $query->whereNotNull('published_at');
+                })->where(News::make()->getRouteKeyName(), $routeKey)->with('tags')->firstOrFail();
+        });
+
+        $this->authorize('update', $news);
+
         return view('pages.news.edit', compact('news'));
     }
 
@@ -81,6 +97,8 @@ class NewsController extends Controller
      */
     public function update(UpdateNewsService $updateNewsService, News $news)
     {
+        $this->authorize('update', $news);
+
         $updateNewsService->update($news);
 
         return redirect()->route('news.edit', $news);
@@ -94,6 +112,8 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        $this->authorize('delete', $news);
+
         $news->delete();
 
         session()->flash('success_message', 'Новость успешно удалена');

@@ -4,7 +4,9 @@
 
 @section('inner_content')
     <h1 class="inline text-black text-3xl font-bold mb-4">{{ $news->title }}</h1>
-    <span class="inline text-black text-3xl mb-4"> / </span> <a href="{{ route('news.edit', $news) }}" class="inline items-center text-blue-800 text-3xl hover:opacity-75">Редактировать новость</a>
+    @admin(auth()->user())
+        <span class="inline text-black text-3xl mb-4"> / </span> <a href="{{ route('news.edit', $news) }}" class="inline items-center text-blue-800 text-3xl hover:opacity-75">Редактировать новость</a>
+    @endadmin
 
     <div class="space-y-4">
 
