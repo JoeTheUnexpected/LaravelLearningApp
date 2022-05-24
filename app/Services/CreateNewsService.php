@@ -20,7 +20,7 @@ class CreateNewsService
         DB::transaction(function () {
             $news = News::create($this->newsRequest->validated());
             $this->tagsSynchronizer->sync($this->tagRequest->validated()['tags'], $news);
-            session()->flash('success_message', 'Новость успешно отредактирована');
+            session()->flash('success_message', 'Новость успешно создана');
         });
     }
 }

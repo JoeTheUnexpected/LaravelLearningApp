@@ -5,6 +5,6 @@
             <x-news.item :item="$item" />
         @endforeach
 
-        {{ $news->onEachSide(0)->links('pagination.view', ['class' => '']) }}
+        {{ $news->onEachSide(1)->links('pagination.view', ['class' => '']) }}
     </div>
 @endif

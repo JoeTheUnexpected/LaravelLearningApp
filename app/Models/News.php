@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\NewsCreated;
+use App\Events\NewsDeleted;
+use App\Events\NewsUpdated;
 use App\Models\Contracts\HasTags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +16,12 @@ class News extends Model implements HasTags
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $dispatchesEvents = [
+        'created' => NewsCreated::class,
+        'updated' => NewsUpdated::class,
+        'deleted' => NewsDeleted::class,
+    ];
 
     public function getRouteKeyName()
     {
