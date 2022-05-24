@@ -10,6 +10,8 @@ class Car extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function carBody()
     {
         return $this->belongsTo(CarBody::class);
