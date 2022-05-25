@@ -890,6 +890,9 @@ input[type="range"]::-ms-fill-lower {
 .max-w-md {
   max-width: 28rem;
 }
+.max-w-4xl {
+  max-width: 56rem;
+}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -940,6 +943,9 @@ input[type="range"]::-ms-fill-lower {
 }
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 .flex-col {
   flex-direction: column;
@@ -1133,6 +1139,9 @@ input[type="range"]::-ms-fill-lower {
 }
 .text-center {
   text-align: center;
+}
+.text-right {
+  text-align: right;
 }
 .align-baseline {
   vertical-align: baseline;

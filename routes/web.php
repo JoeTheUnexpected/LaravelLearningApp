@@ -4,6 +4,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InnerPagesController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SalonController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,5 @@ Route::get('/products/{car}', [CatalogController::class, 'show'])->name('catalog
 Route::get('/catalog/{category}', [CatalogController::class, 'category'])->name('catalog.category');
 
 Auth::routes();
+
+Route::get('/salons', [SalonController::class, 'index'])->name('salons.index');

@@ -102,3 +102,8 @@ Breadcrumbs::for('register', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Регистрация', route('register'));
 });
+
+Breadcrumbs::for('salons.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Наши салоны', route('salons.index'));
+});
